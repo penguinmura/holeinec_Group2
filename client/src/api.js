@@ -1,0 +1,26 @@
+import axios from 'axios';
+
+const getBaseURL = () => {
+    if (import.meta.env.DEV) {
+        const hostname = window.location.hostname;
+        if (hostname.endsWith('.github.dev')) {
+            return `https://${hostname.replace('-5173', '-3000')}/api`;
+        }
+        return 'http://localhost:3000/api';
+    }
+    return '/api';
+};
+
+const api = axios.create({
+    baseURL: getBaseURL(),
+});
+
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+export default api;

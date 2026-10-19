@@ -1,0 +1,34 @@
+{
+  "name": "hole-in-EC Codespace",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  
+  // ポートフォワーディングの設定 (起動時に自動転送)
+  "forwardPorts": [3000, 5173],
+  "portsAttributes": {
+    "3000": {
+      "label": "Express Backend (Port 3000)",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "5173": {
+      "label": "React Frontend (Port 5173)",
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
+    }
+  },
+
+  // VS Codeの推奨拡張機能を自動インストール
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "prisma.prisma",
+        "ms-vsliveshare.vsliveshare"
+      ]
+    }
+  },
+
+  // 起動完了後に自動で実行するコマンド (依存ライブラリのインストール & .envの作成)
+  "postCreateCommand": "cd server && npm install && ( [ -f .env ] || (echo 'DATABASE_URL=\"file:./dev.db\"' > .env && echo 'JWT_SECRET=\"YOUR_SUPER_SECRET_KEY_REPLACE_THIS\"' >> .env) ) && cd ../client && npm install"
+}
