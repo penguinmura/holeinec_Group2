@@ -22,6 +22,9 @@ const getCartItems = async (userId) => {
  * @param {number} quantity - 追加する数量
  */
 const addToCart = async (userId, productId, quantity) => {
+    if (!Number.isInteger(quantity) || quantity <= 0) {
+        throw new Error("数量は1以上の整数にしてください");
+    }
     // すでに同じ商品がカートに入っているか確認
     const existingItem = await prisma.cartItem.findUnique({
         where: {
