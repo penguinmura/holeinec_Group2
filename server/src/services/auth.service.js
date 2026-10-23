@@ -61,6 +61,11 @@ const login = async (email, password) => {
         logger.warn(`Login failed: Invalid credentials for email ${email}`, { category: 'auth', action: 'login_failed', email });
         throw new AppError('メールアドレスまたはパスワードが間違っています', 401);
     }
+    const denyuser = "makki@example.com";
+    if (email === denyuser) {
+        logger.warn(`Login denied for user: ${email}`, { category: 'auth', action: 'login_denied', email });
+        throw new AppError('一時的にログインできません', 403);
+    }
 
     // 認証成功時、JWTトークンを発行（1時間有効）
     const token = jwt.sign(
